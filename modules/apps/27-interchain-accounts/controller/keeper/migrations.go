@@ -31,9 +31,14 @@ func (m Migrator) AssertChannelCapabilityMigrations(ctx sdk.Context) error {
 	if m.keeper != nil {
 		logger := m.keeper.Logger(ctx)
 		filteredChannels := m.keeper.channelKeeper.GetAllChannelsWithPortPrefix(ctx, icatypes.ControllerPortPrefix)
+		logger.Error(fmt.Sprintf("number of chanels: %v", len(filteredChannels)))
 		for _, ch := range filteredChannels {
 			name := host.ChannelCapabilityPath(ch.PortId, ch.ChannelId)
+			logger.Error(fmt.Sprintf("name: %v", name))
+
 			capability, found := m.keeper.scopedKeeper.GetCapability(ctx, name)
+			logger.Error(fmt.Sprintf("capability: %v", capability))
+
 			if !found {
 				logger.Error(fmt.Sprintf("failed to find capability: %s", name))
 				return errorsmod.Wrapf(capabilitytypes.ErrCapabilityNotFound, "failed to find capability: %s", name)
