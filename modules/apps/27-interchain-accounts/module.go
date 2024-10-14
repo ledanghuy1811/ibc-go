@@ -157,6 +157,12 @@ func (am AppModule) RegisterServices(cfg module.Configurator) {
 	if am.hostKeeper != nil {
 		hosttypes.RegisterQueryServer(cfg.QueryServer(), am.hostKeeper)
 	}
+
+	// am.controllerKeeper.sc
+	controllerMigrator := controllerkeeper.NewMigrator(am.controllerKeeper)
+	if err := cfg.RegisterMigration(types.ModuleName, 1, controllerMigrator.AssertChannelCapabilityMigrations); err != nil {
+		panic(fmt.Errorf("failed to migrate interchainaccounts app from version 1 to 2 (channel capabilities owned by controller submodule check): %v", err))
+	}
 }
 
 // InitGenesis performs genesis initialization for the interchain accounts module.
