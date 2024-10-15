@@ -41,6 +41,9 @@ func (k Keeper) Params(c context.Context, _ *types.QueryParamsRequest) (*types.Q
 	ctx := sdk.UnwrapSDKContext(c)
 	params := k.GetParams(ctx)
 
+	chanel, typeChanle := k.channelKeeper.GetChannel(ctx, "icacontroller-orai10lv5lcj22zfnfqrqyqq73w5nvkjvmqa9a277lhc0vyu2hpm9ngssenvaaq", "channel-55")
+	ctx.Logger().Error(fmt.Sprintf("chanel: %v and type: %v", chanel, typeChanle))
+
 	capa, found := k.scopedKeeper.GetCapability(ctx, "capabilities/ports/icacontroller-orai10lv5lcj22zfnfqrqyqq73w5nvkjvmqa9a277lhc0vyu2hpm9ngssenvaaq/channels/channel-55")
 	ctx.Logger().Error(fmt.Sprintf("capability query here: %v and found: %v", capa, found))
 
