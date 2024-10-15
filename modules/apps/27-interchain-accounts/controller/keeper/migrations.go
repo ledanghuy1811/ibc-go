@@ -21,6 +21,7 @@ func NewMigrator(k *Keeper) Migrator {
 // AssertChannelCapabilityMigrations checks that all channel capabilities generated using the interchain accounts controller port prefix
 // are owned by the controller submodule and ibc.
 func (m Migrator) AssertChannelCapabilityMigrations(ctx sdk.Context) error {
+	ctx.Logger().Error(fmt.Sprintf("m.keeper: %v", m.keeper))
 	if m.keeper != nil {
 		logger := m.keeper.Logger(ctx)
 		// filteredChannels := m.keeper.channelKeeper.GetAllChannelsWithPortPrefix(ctx, icatypes.ControllerPortPrefix)
