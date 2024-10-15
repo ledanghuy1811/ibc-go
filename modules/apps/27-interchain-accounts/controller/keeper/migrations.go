@@ -35,8 +35,14 @@ func (m Migrator) AssertChannelCapabilityMigrations(ctx sdk.Context) error {
 			name := host.ChannelCapabilityPath(ch.PortId, ch.ChannelId)
 			capability, found := m.keeper.scopedKeeper.GetCapability(ctx, name)
 			if !found {
-				logger.Error(fmt.Sprintf("failed to find capability: %s", name))
-				return errorsmod.Wrapf(capabilitytypes.ErrCapabilityNotFound, "failed to find capability: %s", name)
+				// if not found then try to add capability for chanel
+				capChanel, err := m.keeper.scopedKeeper.NewCapability(ctx, name)
+				logger.Info(fmt.Sprintf("chanel capacity: %v", capChanel))
+
+				if err != nil {
+					logger.Error(fmt.Sprintf("failed to find capability: %s", name))
+					return errorsmod.Wrapf(capabilitytypes.ErrCapabilityNotFound, "failed to find capability: %s", name)
+				}
 			}
 
 			isAuthenticated := m.keeper.scopedKeeper.AuthenticateCapability(ctx, capability, name)
