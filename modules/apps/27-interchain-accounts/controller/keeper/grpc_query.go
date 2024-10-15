@@ -10,6 +10,7 @@ import (
 
 	"github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/controller/types"
 	icatypes "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/types"
+	host "github.com/cosmos/ibc-go/v4/modules/core/24-host"
 )
 
 var _ types.QueryServer = Keeper{}
@@ -44,8 +45,11 @@ func (k Keeper) Params(c context.Context, _ *types.QueryParamsRequest) (*types.Q
 	chanel, typeChanle := k.channelKeeper.GetChannel(ctx, "icacontroller-orai10lv5lcj22zfnfqrqyqq73w5nvkjvmqa9a277lhc0vyu2hpm9ngssenvaaq", "channel-55")
 	ctx.Logger().Error(fmt.Sprintf("chanel: %v and type: %v", chanel, typeChanle))
 
+	chanCap, f := k.scopedKeeper.GetCapability(ctx, host.ChannelCapabilityPath("icacontroller-orai10lv5lcj22zfnfqrqyqq73w5nvkjvmqa9a277lhc0vyu2hpm9ngssenvaaq", "channel-55"))
+	ctx.Logger().Error(fmt.Sprintf("v4 capability query here: %v and found: %v", chanCap, f))
+
 	capa, found := k.scopedKeeper.GetCapability(ctx, "capabilities/ports/icacontroller-orai10lv5lcj22zfnfqrqyqq73w5nvkjvmqa9a277lhc0vyu2hpm9ngssenvaaq/channels/channel-55")
-	ctx.Logger().Error(fmt.Sprintf("capability query here: %v and found: %v", capa, found))
+	ctx.Logger().Error(fmt.Sprintf("v8 capability query here: %v and found: %v", capa, found))
 
 	return &types.QueryParamsResponse{
 		Params: &params,
