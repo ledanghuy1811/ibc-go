@@ -46,6 +46,8 @@ func (m Migrator) AssertChannelCapabilityMigrations(ctx sdk.Context) error {
 
 				capOwner, hasOwner := m.keeper.scopedKeeper.GetOwners(ctx, name)
 				logger.Error(fmt.Sprintf("capability chanel owner: %v and has owner: %v", capOwner, hasOwner))
+
+				capability = capChanel
 			}
 
 			isAuthenticated := m.keeper.scopedKeeper.AuthenticateCapability(ctx, capability, name)
