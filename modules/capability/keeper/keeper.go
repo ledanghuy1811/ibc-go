@@ -258,7 +258,6 @@ func (sk ScopedKeeper) NewCapability(ctx sdk.Context, name string) (*types.Capab
 
 	// Set the forward mapping between the module and capability tuple and the
 	// capability name in the memKVStore
-	ctx.Logger().Error("")
 	memStore.Set(types.FwdCapabilityKey(sk.module, capability), []byte(name))
 
 	// Set the reverse mapping between the module and capability name and the
@@ -406,10 +405,7 @@ func (sk ScopedKeeper) GetCapabilityName(ctx sdk.Context, cap *types.Capability)
 	}
 	memStore := ctx.KVStore(sk.memKey)
 
-	name := string(memStore.Get(types.FwdCapabilityKey(sk.module, cap)))
-	ctx.Logger().Error("name when get auth: %v", name)
-
-	return name
+	return string(memStore.Get(types.FwdCapabilityKey(sk.module, cap)))
 }
 
 // GetOwners all the Owners that own the capability associated with the name this ScopedKeeper uses

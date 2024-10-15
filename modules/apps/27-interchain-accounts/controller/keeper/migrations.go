@@ -37,15 +37,10 @@ func (m Migrator) AssertChannelCapabilityMigrations(ctx sdk.Context) error {
 			if !found {
 				// if not found then try to add capability for chanel
 				capChanel, err := m.keeper.scopedKeeper.NewCapability(ctx, name)
-				logger.Error(fmt.Sprintf("chanel capability: %v", capChanel))
-
 				if err != nil {
 					logger.Error(fmt.Sprintf("failed to find capability: %s", name))
 					return errorsmod.Wrapf(capabilitytypes.ErrCapabilityNotFound, "failed to find capability: %s", name)
 				}
-
-				capOwner, hasOwner := m.keeper.scopedKeeper.GetOwners(ctx, name)
-				logger.Error(fmt.Sprintf("capability chanel owner: %v and has owner: %v", capOwner, hasOwner))
 
 				capability = capChanel
 			}
