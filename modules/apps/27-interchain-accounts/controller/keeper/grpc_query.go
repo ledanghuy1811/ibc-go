@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
@@ -39,6 +40,9 @@ func (k Keeper) InterchainAccount(goCtx context.Context, req *types.QueryInterch
 func (k Keeper) Params(c context.Context, _ *types.QueryParamsRequest) (*types.QueryParamsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(c)
 	params := k.GetParams(ctx)
+
+	capa, found := k.scopedKeeper.GetCapability(ctx, "capabilities/ports/icacontroller-orai10lv5lcj22zfnfqrqyqq73w5nvkjvmqa9a277lhc0vyu2hpm9ngssenvaaq/channels/channel-55")
+	ctx.Logger().Error(fmt.Sprintf("capability query here: %v and found: %v", capa, found))
 
 	return &types.QueryParamsResponse{
 		Params: &params,
